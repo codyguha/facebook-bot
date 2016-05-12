@@ -1,6 +1,7 @@
 const request = require('request');
 var _ = require( "underscore" );
 
+
 var results = []
 var survey_result = {}
 
@@ -34,7 +35,7 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
 });
 
 controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
-    getProfile(message.user, (err, profile) => {        
+    getProfile(message.user, function(err, profile) {        
         var found_result = _.findWhere(results, {id: message.user});
         if (found_result == undefined){
             bot.reply(message, `Hello ${profile.first_name}`);
@@ -50,7 +51,7 @@ controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
 controller.on('facebook_postback', function(bot, message) {
     if (message.payload == 'yes(start)') {
         bot.reply(message, `Excellent! Lets get started.`);
-        getProfile(message.user, (err, profile) => {
+        getProfile(message.user, function(err, profile) {
             survey_result.id = message.user
             survey_result.user = `${profile.first_name} ${profile.last_name}`
             survey_result.gender = `${profile.gender}`
@@ -109,7 +110,7 @@ controller.on('facebook_postback', function(bot, message) {
     } else if (message.payload == 'Re-do survey') {
         bot.reply(message, `Excellent! Lets get started.`);
         survey_result = {}
-        getProfile(message.user, (err, profile) => {
+        getProfile(message.user, function(err, profile) {
             survey_result.id = message.user
             survey_result.user = `${profile.first_name} ${profile.last_name}`
         });
@@ -445,7 +446,7 @@ redoSurvey = function(bot, message) {
     });
 
 }
-// GET USER INFO !!!()
+// GET USER INFO !!!
 getProfile = function (id, cb) {
     if (!cb) cb = Function.prototype
 
@@ -457,7 +458,7 @@ getProfile = function (id, cb) {
         access_token: process.env.page_token
       },
       json: true
-    }, (err, res, body) => {
+    }, function(err, res, body) {
       if (err) return cb(err)
       if (body.error) return cb(body.error)
 
