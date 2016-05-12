@@ -38,7 +38,7 @@ controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
     getProfile(message.user, function(err, profile) {        
         var found_result = _.findWhere(results, {id: message.user});
         if (found_result == undefined){
-            bot.reply(message, `Hello ${profile.first_name}`);
+            bot.reply(message, `Hello`);
             askSurvey(bot, message);
         } else {
             bot.reply(message, `Hello ${profile.first_name}, you have already done the survey`);
