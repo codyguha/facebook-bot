@@ -1,4 +1,5 @@
 const request = require('request');
+require
 var _ = require( "underscore" );
 
 
@@ -38,7 +39,7 @@ controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
     getProfile(message.user, function(err, profile) {        
         var found_result = _.findWhere(results, {id: message.user});
         if (found_result == undefined){
-            bot.reply(message, `Hello`);
+            bot.reply(message, `Hello ${profile.first_name}`);
             askSurvey(bot, message);
         } else {
             bot.reply(message, `Hello ${profile.first_name}, you have already done the survey`);
@@ -51,6 +52,7 @@ controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
 controller.on('facebook_postback', function(bot, message) {
     if (message.payload == 'yes(start)') {
         bot.reply(message, `Excellent! Lets get started.`);
+        survey_result = {}
         getProfile(message.user, function(err, profile) {
             survey_result.id = message.user
             survey_result.user = `${profile.first_name} ${profile.last_name}`
@@ -113,6 +115,9 @@ controller.on('facebook_postback', function(bot, message) {
         getProfile(message.user, function(err, profile) {
             survey_result.id = message.user
             survey_result.user = `${profile.first_name} ${profile.last_name}`
+            survey_result.gender = `${profile.gender}`
+            survey_result.locale = `${profile.locale}`
+            survey_result.timezone = `${profile.timezone}`
         });
         askRelationship(bot, message)
     }
