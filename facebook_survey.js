@@ -105,9 +105,11 @@ controller.on('facebook_postback', function(bot, message) {
     } else if (message.payload == 'no(survey)') {
         sayThanks(bot, message)
     } else if (message.payload == 'View results') {
+        saveResults(bot, message)
         viewResults(bot, message)
     } else if (message.payload == 'Re-do survey') {
         bot.reply(message, `Excellent! Lets get started.`);
+        deleteEntry(bot, message)
         survey_result = {}
         getProfile(message.user, function(err, profile) {
             survey_result.id = message.user
@@ -123,6 +125,12 @@ controller.on('facebook_postback', function(bot, message) {
         sayThanks(bot, message)
     }
 });
+// check for user
+deleteEntry = function(bot, message){
+    var found_result = _.findWhere(results, {id: message.user});
+    var result = results.filter(function (value) {return (value !== found_result);});
+    results = result
+}
 // View Results
 viewResults = function(bot, message) {
     var found_result = _.findWhere(results, {id: message.user});
