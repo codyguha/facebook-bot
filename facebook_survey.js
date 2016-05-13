@@ -34,7 +34,7 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
 controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
     getProfile(message.user, function(err, profile) {        
         var found_result = _.findWhere(results, {id: message.user});
-        console.log(message.user, `Hello ${profile.first_name}`)
+        console.log(message.user)
         if (found_result == undefined){
             if (profile.first_name == undefined) {
                 bot.reply(message, `Hello New User we cannot move foward if you do not have a first name...`);
