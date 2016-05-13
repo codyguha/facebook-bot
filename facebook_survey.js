@@ -33,14 +33,15 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
 
 controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
     console.log(message.user)
-    var found_result = _.findWhere(results, {id: message.user});
-    if (found_result == undefined){
-            bot.reply(message, `Hello`);
-            askSurvey(bot, message);
-    } else {
-        bot.reply(message, `Hello ${profile.first_name}, you have already done the survey`);
-        redoSurvey(bot, message)
-    }
+    bot.reply(message, `Hello`);
+    // var found_result = _.findWhere(results, {id: message.user});
+    // if (found_result == undefined){
+            
+    //         askSurvey(bot, message);
+    // } else {
+    //     bot.reply(message, `Hello, you have already done the survey`);
+    //     redoSurvey(bot, message)
+    // }
     // getProfile(message.user, function(err, profile) {
     //     console.log(message.user)
     // });
