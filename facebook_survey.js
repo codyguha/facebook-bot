@@ -98,7 +98,7 @@ controller.on('facebook_postback', function(bot, message) {
         
             if (survey_result.hungry == null) {
                 survey_result.hungry = message.payload
-                saveResults(bot, message)
+                redoSurvey(bot, message)
             } else if (survey_result == {}){
             bot.reply(message, `You've already answered that question.`); 
             }
