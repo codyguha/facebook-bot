@@ -107,9 +107,7 @@ controller.on('facebook_postback', function(bot, message) {
     } else if (message.payload == 'View results') {
         viewResults(bot, message)
     } else if (message.payload == 'Re-do survey') {
-        var found_result = _.findWhere(results, {id: message.user});
         bot.reply(message, `Excellent! Lets get started.`);
-        found_result = {}
         survey_result = {}
         getProfile(message.user, function(err, profile) {
             survey_result.id = message.user
@@ -117,18 +115,21 @@ controller.on('facebook_postback', function(bot, message) {
             survey_result.gender = `${profile.gender}`
             survey_result.locale = `${profile.locale}`
             survey_result.timezone = `${profile.timezone}`
+
         });
         askRelationship(bot, message)
+    } else if (message.payload == `I'm done`) {
+        saveResults(bot, message)
+        sayThanks(bot, message)
     }
 });
-// QUESTIONS
+// View Results
 viewResults = function(bot, message) {
     var found_result = _.findWhere(results, {id: message.user});
     var text = JSON.stringify(found_result)
     bot.reply(message, `${text}`);
-    
 }
-
+// QUESTIONS
 askSurvey = function(bot, message) {
     var attachment = {
         'type':'template',
@@ -417,11 +418,10 @@ askHungry = function(bot, message) {
 sayThanks = function(bot, message) {
   bot.reply(message, 'OK! thanks for your time');
 }
-
+//saving
 saveResults = function(bot, message) {
     results.push(survey_result)
     console.log(results)
-    redoSurvey(bot, message)
 }
 
 redoSurvey = function(bot, message) {
@@ -440,6 +440,11 @@ redoSurvey = function(bot, message) {
                 'type':'postback',
                 'title':`re-do survey`,
                 'payload':`Re-do survey`
+                },
+                {
+                'type':'postback',
+                'title':`I'm done`,
+                'payload':`I'm done`
                 }
             ]
         }
