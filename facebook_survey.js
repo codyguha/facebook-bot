@@ -34,6 +34,7 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
 controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
     getProfile(message.user, function(err, profile) {        
         var found_result = _.findWhere(results, {id: message.user});
+        console.log(message.user, `Hello ${profile.first_name}`)
         if (found_result == undefined){
             bot.reply(message, `Hello ${profile.first_name}`);
             askSurvey(bot, message);
