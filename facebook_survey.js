@@ -32,21 +32,22 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
 });
 
 controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
-    getProfile(message.user, function(err, profile) {        
-        var found_result = _.findWhere(results, {id: message.user});
-        console.log(message.user)
-        if (found_result == undefined){
-            if (profile.first_name == undefined) {
-                bot.reply(message, `Hello New User we cannot move foward if you do not have a first name...`);
-            } else {
-                bot.reply(message, `Hello ${profile.first_name}`);
-                askSurvey(bot, message);
-            }
-        } else {
-            bot.reply(message, `Hello ${profile.first_name}, you have already done the survey`);
-            redoSurvey(bot, message)
-        }
-    });
+    console.log(message.user)
+    // getProfile(message.user, function(err, profile) {        
+    //     var found_result = _.findWhere(results, {id: message.user});
+    //     console.log(message.user)
+    //     if (found_result == undefined){
+    //         if (profile.first_name == undefined) {
+    //             bot.reply(message, `Hello New User we cannot move foward if you do not have a first name...`);
+    //         } else {
+    //             bot.reply(message, `Hello ${profile.first_name}`);
+    //             askSurvey(bot, message);
+    //         }
+    //     } else {
+    //         bot.reply(message, `Hello ${profile.first_name}, you have already done the survey`);
+    //         redoSurvey(bot, message)
+    //     }
+    // });
     
 });
 
@@ -509,7 +510,7 @@ getProfile = function (id, cb) {
       uri: `https://graph.facebook.com/v2.6/${id}`,
       qs: {
         fields: 'first_name,last_name,profile_pic,gender,locale,timezone',
-        access_token: 'EAAHK4CVx2kIBAKukGAr2uUzL7ueqe73QfpJ1Pt05pfEc90G7dZBh4EPyC5ySrACqFTutP8TZBlitXVOR9Xee2Ujc3Y6tJREuPYOuY5vEmOvblkq8XjMt2wCD3B89ndHs6OMVoD8FmkM4PZBTGgJ8zm5ju5TfeHgZCZCs1N3faKgZDZD'
+        access_token: process.env.page_token
       },
       json: true
     }, function(err, res, body) {
