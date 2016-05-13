@@ -1,7 +1,5 @@
 const request = require('request');
 var _ = require( 'underscore' );
-
-
 var results = []
 var survey_result = {}
 
@@ -14,7 +12,6 @@ if (!process.env.verify_token) {
     console.log('Error: Specify verify_token in environment');
     process.exit(1);
 }
-
 
 var Botkit = require('./lib/Botkit.js');
 var os = require('os');
@@ -47,6 +44,7 @@ controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
     });
     
 });
+
 // POSTBACK HANLDER
 controller.on('facebook_postback', function(bot, message) {
     if (message.payload == 'yes(start)') {
@@ -109,7 +107,9 @@ controller.on('facebook_postback', function(bot, message) {
     } else if (message.payload == 'View results') {
         viewResults(bot, message)
     } else if (message.payload == 'Re-do survey') {
+        var found_result = _.findWhere(results, {id: message.user});
         bot.reply(message, `Excellent! Lets get started.`);
+        found_result = {}
         survey_result = {}
         getProfile(message.user, function(err, profile) {
             survey_result.id = message.user
