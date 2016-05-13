@@ -505,6 +505,7 @@ redoSurvey = function(bot, message) {
 }
 // GET USER INFO !!!
 getProfile = function (id, cb) {
+    https://graph.facebook.com/oauth/access_token?client_id=504539026414146&client_secret=5f01c8d0f157bf9c5b4cc1c0a15d9334&grant_type=client_credentials
     if (!cb) cb = Function.prototype
 
     request({
@@ -513,6 +514,25 @@ getProfile = function (id, cb) {
       qs: {
         fields: 'first_name,last_name,profile_pic,gender,locale,timezone',
         access_token: process.env.page_token
+      },
+      json: true
+    }, function(err, res, body) {
+      if (err) return cb(err)
+      if (body.error) return cb(body.error)
+
+      cb(null, body)
+    })
+}
+
+getProfile = function (id, cb) {
+    if (!cb) cb = Function.prototype
+
+    request({
+      method: 'GET',
+      uri: `https://graph.facebook.com/v2.6/${id}`,
+      qs: {
+        fields: 'first_name,last_name,profile_pic,gender,locale,timezone',
+        access_token: '504539026414146|jWMXtJ5YqTEuAY2wB6zahrq3F-0'
       },
       json: true
     }, function(err, res, body) {
