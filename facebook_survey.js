@@ -33,22 +33,16 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
 
 controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
     console.log(message.user)
-    getProfile(message.user, function(err, profile) {
-        console.log(profile)
-    });
-    //     var found_result = _.findWhere(results, {id: message.user});
+    var found_result = _.findWhere(results, {id: message.user});
+    if (found_result == undefined){
+            bot.reply(message, `Hello`);
+            askSurvey(bot, message);
+    } else {
+        bot.reply(message, `Hello ${profile.first_name}, you have already done the survey`);
+        redoSurvey(bot, message)
+    }
+    // getProfile(message.user, function(err, profile) {
     //     console.log(message.user)
-    //     if (found_result == undefined){
-    //         if (profile.first_name == undefined) {
-    //             bot.reply(message, `Hello New User we cannot move foward if you do not have a first name...`);
-    //         } else {
-    //             bot.reply(message, `Hello ${profile.first_name}`);
-    //             askSurvey(bot, message);
-    //         }
-    //     } else {
-    //         bot.reply(message, `Hello ${profile.first_name}, you have already done the survey`);
-    //         redoSurvey(bot, message)
-    //     }
     // });
     
 });
@@ -58,13 +52,13 @@ controller.on('facebook_postback', function(bot, message) {
     if (message.payload == 'yes(start)') {
         bot.reply(message, `Excellent! Lets get started.`);
         survey_result = {}
-        getProfile(message.user, function(err, profile) {
-            survey_result.id = message.user
-            survey_result.user = `${profile.first_name} ${profile.last_name}`
-            survey_result.gender = `${profile.gender}`
-            survey_result.locale = `${profile.locale}`
-            survey_result.timezone = `${profile.timezone}`
-        });
+        survey_result.id = message.user
+        // getProfile(message.user, function(err, profile) {
+        //     survey_result.user = `${profile.first_name} ${profile.last_name}`
+        //     survey_result.gender = `${profile.gender}`
+        //     survey_result.locale = `${profile.locale}`
+        //     survey_result.timezone = `${profile.timezone}`
+        // });
         askRelationship(bot, message)
     } else if (message.payload == 'I love it' || message.payload == 'I hate it' || message.payload == 'Guilty pleasure') {
         
@@ -119,14 +113,15 @@ controller.on('facebook_postback', function(bot, message) {
         bot.reply(message, `Excellent! Lets get started.`);
         deleteEntry(bot, message)
         survey_result = {}
-        getProfile(message.user, function(err, profile) {
-            survey_result.id = message.user
-            survey_result.user = `${profile.first_name} ${profile.last_name}`
-            survey_result.gender = `${profile.gender}`
-            survey_result.locale = `${profile.locale}`
-            survey_result.timezone = `${profile.timezone}`
+        survey_result.id = message.user
+        // getProfile(message.user, function(err, profile) {
+            
+        //     survey_result.user = `${profile.first_name} ${profile.last_name}`
+        //     survey_result.gender = `${profile.gender}`
+        //     survey_result.locale = `${profile.locale}`
+        //     survey_result.timezone = `${profile.timezone}`
 
-        });
+        // });
         askRelationship(bot, message)
     } else if (message.payload == `I'm done`) {
         saveResults(bot, message)
@@ -504,41 +499,22 @@ redoSurvey = function(bot, message) {
 
 }
 // GET USER INFO !!!
-getProfile = function (id, cb) {
-    https://graph.facebook.com/oauth/access_token?client_id=504539026414146&client_secret=5f01c8d0f157bf9c5b4cc1c0a15d9334&grant_type=client_credentials
-    if (!cb) cb = Function.prototype
+// getProfile = function (id, cb) {
 
-    request({
-      method: 'GET',
-      uri: `https://graph.facebook.com/v2.6/${id}`,
-      qs: {
-        fields: 'first_name,last_name,profile_pic,gender,locale,timezone',
-        access_token: process.env.page_token
-      },
-      json: true
-    }, function(err, res, body) {
-      if (err) return cb(err)
-      if (body.error) return cb(body.error)
+//     if (!cb) cb = Function.prototype
 
-      cb(null, body)
-    })
-}
+//     request({
+//       method: 'GET',
+//       uri: `https://graph.facebook.com/v2.6/${id}`,
+//       qs: {
+//         fields: 'first_name,last_name,profile_pic,gender,locale,timezone',
+//         access_token: process.env.page_token
+//       },
+//       json: true
+//     }, function(err, res, body) {
+//       if (err) return cb(err)
+//       if (body.error) return cb(body.error)
 
-getProfile = function (id, cb) {
-    if (!cb) cb = Function.prototype
-
-    request({
-      method: 'GET',
-      uri: `https://graph.facebook.com/v2.6/${id}`,
-      qs: {
-        fields: 'first_name,last_name,profile_pic,gender,locale,timezone',
-        access_token: '504539026414146|jWMXtJ5YqTEuAY2wB6zahrq3F-0'
-      },
-      json: true
-    }, function(err, res, body) {
-      if (err) return cb(err)
-      if (body.error) return cb(body.error)
-
-      cb(null, body)
-    })
-}
+//       cb(null, body)
+//     })
+// }
