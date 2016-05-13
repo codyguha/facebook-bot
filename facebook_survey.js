@@ -98,7 +98,7 @@ controller.on('facebook_postback', function(bot, message) {
         
             if (survey_result.hungry == null) {
                 survey_result.hungry = message.payload
-                redoSurvey(bot, message)
+                endSurvey(bot, message)
             } else if (survey_result == {}){
             bot.reply(message, `You've already answered that question.`); 
             }
@@ -432,7 +432,7 @@ saveResults = function(bot, message) {
     console.log(results)
 }
 
-redoSurvey = function(bot, message) {
+endSurvey = function(bot, message) {
     var attachment = {
         'type':'template',
         'payload':{
@@ -441,12 +441,44 @@ redoSurvey = function(bot, message) {
             'buttons':[
                 {
                 'type':'postback',
-                'title':`view results`,
+                'title':`View results`,
                 'payload':`View results`
                 },
                 {
                 'type':'postback',
-                'title':`re-do survey`,
+                'title':`Re-do survey`,
+                'payload':`Re-do survey`
+                },
+                {
+                'type':'postback',
+                'title':`I'm done`,
+                'payload':`I'm done`
+                }
+            ]
+        }
+    };
+
+    bot.reply(message, {
+        attachment: attachment,
+    });
+
+}
+
+redoSurvey = function(bot, message) {
+    var attachment = {
+        'type':'template',
+        'payload':{
+            'template_type':'button',
+            'text': 'How can I help ?',
+            'buttons':[
+                {
+                'type':'postback',
+                'title':`View results`,
+                'payload':`View results`
+                },
+                {
+                'type':'postback',
+                'title':`Re-do survey`,
                 'payload':`Re-do survey`
                 },
                 {
