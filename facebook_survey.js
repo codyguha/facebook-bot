@@ -34,10 +34,11 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
 controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
     console.log(message.user)
     bot.reply(message, `Hello`);
+    askSurvey(bot, message);
     // var found_result = _.findWhere(results, {id: message.user});
     // if (found_result == undefined){
             
-    //         askSurvey(bot, message);
+    //         
     // } else {
     //     bot.reply(message, `Hello, you have already done the survey`);
     //     redoSurvey(bot, message)
