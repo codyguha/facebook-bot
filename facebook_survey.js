@@ -1,6 +1,5 @@
 const request = require('request');
-require
-var _ = require( "underscore" );
+var _ = require( 'underscore' );
 
 
 var results = []
