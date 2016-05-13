@@ -36,8 +36,12 @@ controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
         var found_result = _.findWhere(results, {id: message.user});
         console.log(message.user, `Hello ${profile.first_name}`)
         if (found_result == undefined){
-            bot.reply(message, `Hello ${profile.first_name}`);
-            askSurvey(bot, message);
+            if (profile.first_name == undefined) {
+                bot.reply(message, `Hello New User we cannot move foward if you do not have a first name...`);
+            } else {
+                bot.reply(message, `Hello ${profile.first_name}`);
+                askSurvey(bot, message);
+            }
         } else {
             bot.reply(message, `Hello ${profile.first_name}, you have already done the survey`);
             redoSurvey(bot, message)
