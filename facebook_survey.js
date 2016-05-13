@@ -35,7 +35,7 @@ controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
     console.log(message.user)
     getProfile(message.user, function(err, profile) {
         console.log(profile)
-    }  
+    });
     //     var found_result = _.findWhere(results, {id: message.user});
     //     console.log(message.user)
     //     if (found_result == undefined){
