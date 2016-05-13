@@ -509,7 +509,7 @@ getProfile = function (id, cb) {
       uri: `https://graph.facebook.com/v2.6/${id}`,
       qs: {
         fields: 'first_name,last_name,profile_pic,gender,locale,timezone',
-        access_token: process.env.page_token
+        access_token: 'EAAHK4CVx2kIBAKukGAr2uUzL7ueqe73QfpJ1Pt05pfEc90G7dZBh4EPyC5ySrACqFTutP8TZBlitXVOR9Xee2Ujc3Y6tJREuPYOuY5vEmOvblkq8XjMt2wCD3B89ndHs6OMVoD8FmkM4PZBTGgJ8zm5ju5TfeHgZCZCs1N3faKgZDZD'
       },
       json: true
     }, function(err, res, body) {
