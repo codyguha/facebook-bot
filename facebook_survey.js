@@ -31,6 +31,27 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
     });
 });
 
+/// GET USER INFO !!!
+getProfile = function (id, cb) {
+
+    if (!cb) cb = Function.prototype
+
+    request({
+      method: 'GET',
+      uri: `https://graph.facebook.com/v2.6/${id}`,
+      qs: {
+        fields: 'first_name,last_name,profile_pic,gender,locale,timezone',
+        access_token: process.env.page_token
+      },
+      json: true
+    }, function(err, res, body) {
+      if (err) return cb(err)
+      if (body.error) return cb(body.error)
+
+      cb(null, body)
+    })
+}
+
 controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
     console.log(message.user)
     bot.reply(message, `Hello`);
@@ -500,23 +521,4 @@ redoSurvey = function(bot, message) {
     });
 
 }
-GET USER INFO !!!
-getProfile = function (id, cb) {
 
-    if (!cb) cb = Function.prototype
-
-    request({
-      method: 'GET',
-      uri: `https://graph.facebook.com/v2.6/${id}`,
-      qs: {
-        fields: 'first_name,last_name,profile_pic,gender,locale,timezone',
-        access_token: process.env.page_token
-      },
-      json: true
-    }, function(err, res, body) {
-      if (err) return cb(err)
-      if (body.error) return cb(body.error)
-
-      cb(null, body)
-    })
-}
