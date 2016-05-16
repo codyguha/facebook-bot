@@ -500,23 +500,23 @@ redoSurvey = function(bot, message) {
     });
 
 }
-// GET USER INFO !!!
-// getProfile = function (id, cb) {
+GET USER INFO !!!
+getProfile = function (id, cb) {
 
-//     if (!cb) cb = Function.prototype
+    if (!cb) cb = Function.prototype
 
-//     request({
-//       method: 'GET',
-//       uri: `https://graph.facebook.com/v2.6/${id}`,
-//       qs: {
-//         fields: 'first_name,last_name,profile_pic,gender,locale,timezone',
-//         access_token: process.env.page_token
-//       },
-//       json: true
-//     }, function(err, res, body) {
-//       if (err) return cb(err)
-//       if (body.error) return cb(body.error)
+    request({
+      method: 'GET',
+      uri: `https://graph.facebook.com/v2.6/${id}`,
+      qs: {
+        fields: 'first_name,last_name,profile_pic,gender,locale,timezone',
+        access_token: process.env.page_token
+      },
+      json: true
+    }, function(err, res, body) {
+      if (err) return cb(err)
+      if (body.error) return cb(body.error)
 
-//       cb(null, body)
-//     })
-// }
+      cb(null, body)
+    })
+}
