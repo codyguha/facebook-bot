@@ -54,6 +54,7 @@ getProfile = function (id, cb) {
 
 controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
     console.log(message.user)
+    console.log(message)
     bot.reply(message, `Hello`);
     askSurvey(bot, message);
     // var found_result = _.findWhere(results, {id: message.user});
