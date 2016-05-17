@@ -34,11 +34,11 @@ controller.on('message_received', function(bot, message) {
     console.log(message)
     if (message.attachments){
         if (message.attachments[0].type == 'image') {
-         if (survey_result.mood == null) {
-            survey_result.mood = message.attachments[0].payload.url
-            question004Preference(bot, message)
-        } else {
-            var attachment = {
+            if (survey_result.mood == null) {
+                survey_result.mood = message.attachments[0].payload.url
+                question004Preference(bot, message)
+            } else {
+                var attachment = {
                     'type': 'image',
                     'payload': {
                         'url': 'https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xta1/t39.1997-6/p100x100/10173498_272702312904034_659736090_n.png'
@@ -373,53 +373,8 @@ question002Detail = function(bot, message) {
 }
 
 question003Mood = function(bot, message) {
-    var attachment = {
-        'type': 'template',
-        'payload': {
-            'template_type': 'generic',
-            'elements': [{
-                'title': 'happy',
-                'image_url': 'http://emojipedia-us.s3.amazonaws.com/cache/a6/f4/a6f4673381b6074c837f4e502d4d1378.png',
-                'subtitle': 'Swipe right for more answers...',
-                'buttons': [{
-                    'type': 'postback',
-                    'title': 'Choose',
-                    'payload': 'question003 happy'
-                }]
-            }, {
-                'title': `unhappy`,
-                'image_url': 'http://emojipedia-us.s3.amazonaws.com/cache/7a/b0/7ab085fef3d5a684db6d9c1dba18314e.png',
-                'buttons': [{
-                    'type': 'postback',
-                    'title': 'Choose',
-                    'payload': `question003 unhappy`
-                }]
-            }, {
-                'title': 'angry',
-                'image_url': 'http://emojipedia-us.s3.amazonaws.com/cache/59/f3/59f3b3231ec2e3cf91c5b975889e3c91.png',
-                'buttons': [{
-                    'type': 'postback',
-                    'title': 'Choose',
-                    'payload': 'question003 angry'
-                }]
-            }, {
-                'title': `chicken`,
-                'image_url': 'https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-prn2/t39.1997-6/p100x100/10173501_272703182903947_2076129329_n.png',
-                'subtitle': 'Swipe left for more answers...',
-                'buttons': [{
-                    'type': 'postback',
-                    'title': 'Choose',
-                    'payload': `question003 chicken`
-                }]
-            }]
-        }
-    };
-
-    bot.reply(message, {
-        attachment: attachment,
-    });
-    
     bot.reply(message, 'What is your current mood ?');
+    bot.reply(message, 'Please use emoticons...');
 
 }
 
