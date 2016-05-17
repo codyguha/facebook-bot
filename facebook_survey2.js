@@ -339,7 +339,7 @@ question002Detail = function(bot, message) {
                 attachment: attachment,
             });
             
-            bot.reply(message, `Guilty pleasure you say, tell me more.`);
+            bot.reply(message, `Guilty pleasure you say ? tell me more.`);
     
     } else {
             var attachment = {
