@@ -67,6 +67,7 @@ controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
 
 // POSTBACK HANLDER
 controller.on('facebook_postback', function(bot, message) {
+    console.log(survey_result, results)
     if (message.payload == 'yes(start)') {
         bot.reply(message, `Excellent! Lets get started.`);
         survey_result = {}
