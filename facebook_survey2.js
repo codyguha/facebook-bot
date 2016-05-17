@@ -30,6 +30,60 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
     });
 });
 
+var SURVEY = {
+        title: Chicken Survey,
+        questions: { 
+            ask: `What would you say your relationship is with fired chicken?`
+            responses: {
+                'I love it', 
+                `It's a guilty pleasure`,
+                `Not really my thing`,
+                `I’ll die before I eat fried chicken`
+            }
+        },{ 
+            ask: `What is your favourite way to eat fried chicken?`
+            responses: {
+                'I make it myself', 
+                `KFC is my go to`,
+                `Any fried chicken is good chicken`,
+                `It's a secret and I’m not telling you`
+            }
+        },{ 
+            ask: `Guilty pleasure you say, tell me more.`
+            responses: {
+                'After a night of hard partying', 
+                `A treat if I’ve been eating good for while`,
+                `It's a personal matter`,
+            }
+        },{ 
+            ask: `So your not a fan eh? Tell me more.`
+            responses: {
+                'Chicken is God’s creature and shouldn’t be eaten', 
+                `Fried food is gross`,
+                `I’m not going to get into it.`,
+            }
+        },
+
+
+
+
+
+
+
+Not my thing and I’ll die questions. So your not a fan eh? Tell us more.
+Chicken is God’s creature and shouldn’t be eaten
+Fried food is gross 
+I’m not going to get into it.
+What is your current mood?
+Show 4 different emojis
+Which of these meals your you like to be eating right now?
+Show 4 food pics
+Have we made you hungry answering these questions?
+Yes/no
+Thanks for your time. Funny animated High five meme!}
+
+
+
 /// GET USER INFO !!!
 getProfile = function(id, cb) {
 
@@ -70,45 +124,42 @@ controller.hears(['hi', 'Hi'], 'message_received', function(bot, message) {
 // POSTBACK HANLDER
 controller.on('facebook_postback', function(bot, message) {
     console.log(survey_result, results)
-    var answered_true_msg = answered_true_msg
+    var answered_true_msg = `You've already answered that question.`
     if (message.payload == 'yes(start)' || message.payload == 'Re-do survey') {
         bot.reply(message, `Excellent! Lets get started.`);
         startSurvey(bot, message);
-    } else if (message.payload == 'I love it' || message.payload == 'I hate it' || message.payload == 'Guilty pleasure') {
-        if (survey_result.relationship == null) {
-            survey_result.relationship = message.payload
-            askDetail(bot, message)
+        // (message.payload == 'I love it' || message.payload == 'I hate it' || message.payload == 'Guilty pleasure')
+    } else if (message.payload.substring(0,11) == 'question001'){
+        if (survey_result.message.relationship == null) {
+            survey_result.message.relationship = message.payload.substring(12)
+            question002Detail(bot, message)
         } else {
             bot.reply(message, answered_true_msg);
         }
-    } else if (message.payload == 'I make it myself' || message.payload == 'KFC is my go to' || message.payload == 'Any way is good' || message.payload == 'Fried food is gross' || message.payload == `I don't eat animals` || message.payload == `It's a secret` || message.payload == `reward` || message.payload == `cures hangover`) {
+    } else if (message.payload.substring(0,11) == 'question002') {
         if (survey_result.detail == null) {
-            survey_result.detail = message.payload
-            askMood(bot, message)
+            survey_result.detail = message.payload.substring(12)
+            question003Mood(bot, message)
         } else {
             bot.reply(message, answered_true_msg);
         }
-    } else if (message.payload == '(•‿•)' || message.payload == '(•︵•)' || message.payload == '(•_•)') {
+    } else if (message.payload.substring(0,11) == 'question003') {
         if (survey_result.mood == null) {
-            survey_result.mood = message.payload
-            askPreference(bot, message)
+            survey_result.mood = message.payload.substring(12)
+            question004Preference(bot, message)
         } else {
             bot.reply(message, answered_true_msg);
         }
-
-    } else if (message.payload == 'Chicken Parmesan' || message.payload == 'Double Down' || message.payload == 'Fried Drumsticks' || message.payload == 'Chicken Nuggets' || message.payload == 'Veggies') {
-
+    } else if (message.payload.substring(0,11) == 'question004') {
         if (survey_result.preference == null) {
-            survey_result.preference = message.payload
-            askHungry(bot, message)
+            survey_result.preference = message.payload.substring(12)
+            question005Hungry(bot, message)
         } else {
             bot.reply(message, answered_true_msg);
         }
-
-    } else if (message.payload == 'yes' || message.payload == 'no') {
-
+    } else if (message.payload.substring(0,11) == 'question005') {
         if (survey_result.hungry == null) {
-            survey_result.hungry = message.payload
+            survey_result.hungry = message.payload.substring(12)
             endSurvey(bot, message)
         } else if (survey_result == {}) {
             bot.reply(message, answered_true_msg);
@@ -125,14 +176,14 @@ controller.on('facebook_postback', function(bot, message) {
 });
 
 deleteEntry = function(bot, message) {
-        var previous_entry = _.findWhere(results, {
-            id: message.user
-        });
-        var results_without_previous_entry = results.filter(function(value) {
-            return (value !== previous_entry);
-        });
-        results = results_without_previous_entry
-    }
+    var previous_entry = _.findWhere(results, {
+        id: message.user
+    });
+    var results_without_previous_entry = results.filter(function(value) {
+        return (value !== previous_entry);
+    });
+    results = results_without_previous_entry
+}
     // Save/Delete/View Results
 viewResults = function(bot, message) {
     var found_result = _.findWhere(results, {
@@ -188,7 +239,7 @@ question001Relationship = function(bot, message) {
             'template_type': 'generic',
             'elements': [{
                 'title': 'I love it',
-                'subtitle': 'Swipe right for more answers',
+                'subtitle': 'Swipe right for more answers...',
                 'buttons': [{
                     'type': 'postback',
                     'title': 'Choose',
@@ -210,7 +261,7 @@ question001Relationship = function(bot, message) {
                 }]
             }, {
                 'title': `I’ll die before I eat fried chicken`,
-                'subtitle': 'Swipe left for more answers',
+                'subtitle': 'Swipe left for more answers...',
                 'buttons': [{
                     'type': 'postback',
                     'title': 'Choose',
@@ -223,86 +274,47 @@ question001Relationship = function(bot, message) {
     bot.reply(message, {
         attachment: attachment,
     });
+    
     bot.reply(message, 'What would you say your relationship is with fried chicken ?');
 }
 
-askPreference = function(bot, message) {
-    var attachment = {
-        'type': 'template',
-        'payload': {
-            'template_type': 'generic',
-            'elements': [{
-                'title': 'Chicken Parmesan',
-                'image_url': 'http://fiber-international.com/wp-content/uploads/2015/04/800x600-chicken.jpg',
-                'buttons': [{
-                    'type': 'postback',
-                    'title': 'Choose',
-                    'payload': 'Chicken Parmesan'
-                }]
-            }, {
-                'title': 'Double Down',
-                'image_url': 'http://assets.bwbx.io/images/ieMg5BCeWkWU/v1/-1x-1.jpg',
-                'buttons': [{
-                    'type': 'postback',
-                    'title': 'Choose',
-                    'payload': 'Double Down'
-                }]
-            }, {
-                'title': 'Fried Drumsticks',
-                'image_url': 'https://i.ytimg.com/vi/G8hbFO-r2nQ/maxresdefault.jpg',
-                'buttons': [{
-                    'type': 'postback',
-                    'title': 'Choose',
-                    'payload': 'Fried Drumsticks'
-                }]
-            }, {
-                'title': 'Chicken Nuggets',
-                'image_url': 'http://www.urbanmommies.com/wp-content/uploads/McDonalds-Chicken-Nuggets.jpg',
-                'buttons': [{
-                    'type': 'postback',
-                    'title': 'Choose',
-                    'payload': 'Chicken Nuggets'
-                }]
-            }, {
-                'title': 'Veggies',
-                'image_url': 'http://www.stevensonfitness.com/wp-content/uploads/2014/10/veggies.jpg',
-                'buttons': [{
-                    'type': 'postback',
-                    'title': 'Choose',
-                    'payload': 'Veggies'
-                }]
-            }]
-        }
-    };
-
-    bot.reply(message, {
-        attachment: attachment,
-    });
-
-    bot.reply(message, 'What would you say your relationship is with fried chicken ?');
-}
-
-
-
-askDetail = function(bot, message) {
-    if (message.payload == 'I love it') {
-        var attachment = {
+question002Detail = function(bot, message) {
+    if (message.payload.substring(12) == 'I love it') {
+        question002a = function(bot, message){
+            var attachment = {
             'type': 'template',
             'payload': {
-                'template_type': 'button',
-                'text': 'What is your favourite way to eat fried chicken ?',
-                'buttons': [{
-                    'type': 'postback',
+                'template_type': 'generic',
+                'elements': [{
                     'title': 'I make it myself',
-                    'payload': 'I make it myself'
+                    'subtitle': 'Swipe right for more answers...',
+                    'buttons': [{
+                        'type': 'postback',
+                        'title': 'Choose',
+                        'payload': 'question002 I make it myself'
+                    }]
                 }, {
-                    'type': 'postback',
-                    'title': 'KFC is my go to',
-                    'payload': 'KFC is my go to'
+                    'title': `KFC is my go to`,
+                    'buttons': [{
+                        'type': 'postback',
+                        'title': 'Choose',
+                        'payload': `question002 KFC is my go to`
+                    }]
                 }, {
-                    'type': 'postback',
-                    'title': 'Any way is good',
-                    'payload': 'Any way is good'
+                    'title': 'Any fried chicken is good chicken',
+                    'buttons': [{
+                        'type': 'postback',
+                        'title': 'Choose',
+                        'payload': 'question002 Any fried chicken is good chicken'
+                    }]
+                }, {
+                    'title': `It's a secret and I’m not telling you`,
+                    'subtitle': 'Swipe left for more answers...',
+                    'buttons': [{
+                        'type': 'postback',
+                        'title': 'Choose',
+                        'payload': `question002 It's a secret and I’m not telling you`
+                    }]
                 }]
             }
         };
@@ -310,25 +322,38 @@ askDetail = function(bot, message) {
         bot.reply(message, {
             attachment: attachment,
         });
-
-    } else if (message.payload == 'I hate it') {
-        var attachment = {
+        
+        bot.reply(message, `What is your favourite way to eat fried chicken?`);
+    
+    } else if (message.payload.substring(12) == `It's a guilty pleasure`) {
+        question002b = function(bot, message){
+            var attachment = {
             'type': 'template',
             'payload': {
-                'template_type': 'button',
-                'text': 'Not a fan ? tell me more.',
-                'buttons': [{
-                    'type': 'postback',
-                    'title': 'Fried food is gross',
-                    'payload': 'Fried food is gross'
+                'template_type': 'generic',
+                'elements': [{
+                    'title': 'After a night of hard partying',
+                    'subtitle': 'Swipe right for more answers...',
+                    'buttons': [{
+                        'type': 'postback',
+                        'title': 'Choose',
+                        'payload': 'question002 After a night of hard partying'
+                    }]
                 }, {
-                    'type': 'postback',
-                    'title': `I don't eat animals`,
-                    'payload': `I don't eat animals`
+                    'title': `KFC is my go to`,
+                    'buttons': [{
+                        'type': 'postback',
+                        'title': 'Choose',
+                        'payload': `question002 A treat if I’ve been eating good for while`
+                    }]
                 }, {
-                    'type': 'postback',
-                    'title': `It's a secret`,
-                    'payload': `It's a secret`
+                    'title': `It's a personal matter`,
+                    'subtitle': 'Swipe left for more answers...',
+                    'buttons': [{
+                        'type': 'postback',
+                        'title': 'Choose',
+                        'payload': `question002 It's a personal matter`
+                    }]
                 }]
             }
         };
@@ -336,57 +361,90 @@ askDetail = function(bot, message) {
         bot.reply(message, {
             attachment: attachment,
         });
-
-    } else if (message.payload == 'Guilty pleasure') {
-        var attachment = {
-            'type': 'template',
-            'payload': {
-                'template_type': 'button',
-                'text': 'Guilty pleasure you say, tell me more.',
-                'buttons': [{
-                    'type': 'postback',
-                    'title': 'When Hungover',
-                    'payload': 'cures hangover'
-                }, {
-                    'type': 'postback',
-                    'title': 'Reward for myself',
-                    'payload': 'reward'
-                }, {
-                    'type': 'postback',
-                    'title': `It's a secret`,
-                    'payload': `It's a secret`
-                }]
-            }
-        };
-
-        bot.reply(message, {
-            attachment: attachment,
-        });
-
+        
+        bot.reply(message, `Guilty pleasure you say, tell me more.`);
+    
     } else {
-        bot.reply(message, 'oops')
-    }
+        question002c = function(bot, message){
+            var attachment = {
+            'type': 'template',
+            'payload': {
+                'template_type': 'generic',
+                'elements': [{
+                    'title': 'Chicken is God’s creature and shouldn’t be eaten',
+                    'subtitle': 'Swipe right for more answers...',
+                    'buttons': [{
+                        'type': 'postback',
+                        'title': 'Choose',
+                        'payload': 'question002 Chicken is God’s creature and shouldn’t be eaten'
+                    }]
+                }, {
+                    'title': `Fried food is gross`,
+                    'buttons': [{
+                        'type': 'postback',
+                        'title': 'Choose',
+                        'payload': `question002 Fried food is gross`
+                    }]
+                }, {
+                    'title': `I’m not going to get into it.`,
+                    'subtitle': 'Swipe left for more answers...',
+                    'buttons': [{
+                        'type': 'postback',
+                        'title': 'Choose',
+                        'payload': `question002 I’m not going to get into it.`
+                    }]
+                }]
+            }
+        };
 
+        bot.reply(message, {
+            attachment: attachment,
+        });
+        
+        bot.reply(message, `So your not a fan eh? Tell me more.`);
+    
+    }
 }
 
-askMood = function(bot, message) {
+question003Mood = function(bot, message) {
     var attachment = {
         'type': 'template',
         'payload': {
-            'template_type': 'button',
-            'text': 'What is your current mood ?',
-            'buttons': [{
-                'type': 'postback',
-                'title': `(•‿•)`,
-                'payload': `(•‿•)`
+            'template_type': 'generic',
+            'elements': [{
+                'title': 'happy',
+                'image_url': 'http://emojipedia-us.s3.amazonaws.com/cache/a6/f4/a6f4673381b6074c837f4e502d4d1378.png',
+                'subtitle': 'Swipe right for more answers...',
+                'buttons': [{
+                    'type': 'postback',
+                    'title': 'Choose',
+                    'payload': 'question003 happy'
+                }]
             }, {
-                'type': 'postback',
-                'title': `(•︵•)`,
-                'payload': `(•︵•)`
+                'title': `unhappy`,
+                'image_url': 'http://emojipedia-us.s3.amazonaws.com/cache/7a/b0/7ab085fef3d5a684db6d9c1dba18314e.png',
+                'buttons': [{
+                    'type': 'postback',
+                    'title': 'Choose',
+                    'payload': `question003 unhappy`
+                }]
             }, {
-                'type': 'postback',
-                'title': `(•_•)`,
-                'payload': `(•_•)`
+                'title': 'angry',
+                'image_url': 'http://emojipedia-us.s3.amazonaws.com/cache/59/f3/59f3b3231ec2e3cf91c5b975889e3c91.png',
+                'buttons': [{
+                    'type': 'postback',
+                    'title': 'Choose',
+                    'payload': 'question003 angry'
+                }]
+            }, {
+                'title': `chicken`,
+                'image_url': 'http://emojipedia-us.s3.amazonaws.com/cache/4c/11/4c112e918aedbf4449a5c88461a27443.png',
+                'subtitle': 'Swipe left for more answers...',
+                'buttons': [{
+                    'type': 'postback',
+                    'title': 'Choose',
+                    'payload': `question003 chicken`
+                }]
             }]
         }
     };
@@ -394,10 +452,12 @@ askMood = function(bot, message) {
     bot.reply(message, {
         attachment: attachment,
     });
+    
+    bot.reply(message, 'What is your current mood ?');
 
 }
 
-askPreference = function(bot, message) {
+question004Preference = function(bot, message) {
     var attachment = {
         'type': 'template',
         'payload': {
@@ -408,7 +468,7 @@ askPreference = function(bot, message) {
                 'buttons': [{
                     'type': 'postback',
                     'title': 'Choose',
-                    'payload': 'Chicken Parmesan'
+                    'payload': 'question004 Chicken Parmesan'
                 }]
             }, {
                 'title': 'Double Down',
@@ -416,7 +476,7 @@ askPreference = function(bot, message) {
                 'buttons': [{
                     'type': 'postback',
                     'title': 'Choose',
-                    'payload': 'Double Down'
+                    'payload': 'question004 Double Down'
                 }]
             }, {
                 'title': 'Fried Drumsticks',
@@ -424,7 +484,7 @@ askPreference = function(bot, message) {
                 'buttons': [{
                     'type': 'postback',
                     'title': 'Choose',
-                    'payload': 'Fried Drumsticks'
+                    'payload': 'question004 Fried Drumsticks'
                 }]
             }, {
                 'title': 'Chicken Nuggets',
@@ -432,7 +492,7 @@ askPreference = function(bot, message) {
                 'buttons': [{
                     'type': 'postback',
                     'title': 'Choose',
-                    'payload': 'Chicken Nuggets'
+                    'payload': 'question004 Chicken Nuggets'
                 }]
             }, {
                 'title': 'Veggies',
@@ -440,7 +500,7 @@ askPreference = function(bot, message) {
                 'buttons': [{
                     'type': 'postback',
                     'title': 'Choose',
-                    'payload': 'Veggies'
+                    'payload': 'question004 Veggies'
                 }]
             }]
         }
@@ -453,7 +513,7 @@ askPreference = function(bot, message) {
     bot.reply(message, 'Which of these meals your you like to be eating right now ?');
 }
 
-askHungry = function(bot, message) {
+question005Hungry = function(bot, message) {
         var attachment = {
             'type': 'template',
             'payload': {
@@ -462,11 +522,11 @@ askHungry = function(bot, message) {
                 'buttons': [{
                     'type': 'postback',
                     'title': `yes`,
-                    'payload': `yes`
+                    'payload': `question005 yes`
                 }, {
                     'type': 'postback',
                     'title': `no`,
-                    'payload': `no`
+                    'payload': `question005 no`
                 }]
             }
         };
