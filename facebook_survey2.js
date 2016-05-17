@@ -385,7 +385,7 @@ question003Mood = function(bot, message) {
                 }]
             }, {
                 'title': `chicken`,
-                'image_url': 'http://emojipedia-us.s3.amazonaws.com/cache/4c/11/4c112e918aedbf4449a5c88461a27443.png',
+                'image_url': 'https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-prn2/t39.1997-6/p100x100/10173501_272703182903947_2076129329_n.png',
                 'subtitle': 'Swipe left for more answers...',
                 'buttons': [{
                     'type': 'postback',
