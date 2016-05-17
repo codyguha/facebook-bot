@@ -81,25 +81,20 @@ controller.on('facebook_postback', function(bot, message) {
         });
         askRelationship(bot, message)
     } else if (message.payload == 'I love it' || message.payload == 'I hate it' || message.payload == 'Guilty pleasure') {
-        
-            if (survey_result.relationship == null) {
-                survey_result.relationship = message.payload
-                askDetail(bot, message)
-            } else {
-                bot.reply(message, answered_true_msg);     
-            }
-        
+        if (survey_result.relationship == null) {
+            survey_result.relationship = message.payload
+            askDetail(bot, message)
+        } else {
+            bot.reply(message, answered_true_msg);     
+        }
     } else if (message.payload == 'I make it myself' || message.payload == 'KFC is my go to' || message.payload == 'Any way is good' || message.payload == 'Fried food is gross' || message.payload == `I don't eat animals` || message.payload == `It's a secret` || message.payload == `reward` ||message.payload == `cures hangover`) {
-        
-            if (survey_result.detail == null) {
-                survey_result.detail = message.payload
-                askMood(bot, message)
-            } else {
-                bot.reply(message, answered_true_msg);     
-            }
-        
+        if (survey_result.detail == null) {
+            survey_result.detail = message.payload
+            askMood(bot, message)
+        } else {
+            bot.reply(message, answered_true_msg);     
+        }
     } else if (message.payload == '(•‿•)' || message.payload == '(•︵•)' || message.payload == '(•_•)') {
-        
             if (survey_result.mood == null) {
                 survey_result.mood = message.payload
                 askPreference(bot, message)
