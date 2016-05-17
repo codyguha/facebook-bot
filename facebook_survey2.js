@@ -166,7 +166,9 @@ viewResults = function(bot, message) {
         id: message.user
     });
     var text = JSON.stringify(found_result)
-    bot.reply(message, `${text}`);
+    bot.reply(message, `NAME: ${text.user}, RELATIONSHIP: ${text.relationship}, DETAIL: ${text.detail}, PREFERENCE: ${text.preference}`);
+    bot.reply(message, `hungry ? ${text.hungry}`);
+    bot.reply(message, `mood: ${text.mood}`);
 }
 saveAnswer = function(answer) {
 
