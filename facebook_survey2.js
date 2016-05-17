@@ -30,7 +30,7 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
     });
 });
 
-controller.on('message_received', function(bot, message) {
+controller.hears('message_received', function(bot, message) {
     if (message.attachments[0].type == 'image') {
          if (survey_result.mood == null) {
             survey_result.mood = message.attachments[0].payload.url
@@ -47,6 +47,8 @@ controller.on('message_received', function(bot, message) {
                 attachment: attachment,
             });
         }
+    } else {
+
     }
 });
 
