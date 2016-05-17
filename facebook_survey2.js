@@ -37,9 +37,9 @@ controller.on('message_received', function(bot, message) {
             question004Preference(bot, message)
         } else {
             var attachment = {
-                'type' = 'image',
-                'payload' = {
-                    'url' = 'https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xta1/t39.1997-6/p100x100/10173498_272702312904034_659736090_n.png'
+                'type': 'image',
+                'payload': {
+                    'url': 'https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xta1/t39.1997-6/p100x100/10173498_272702312904034_659736090_n.png'
                 }
 
             }
