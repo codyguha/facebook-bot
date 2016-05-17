@@ -32,25 +32,25 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
 
 controller.on('message_received', function(bot, message) {
     console.log(message)
-    if (message.attachments[0].type == 'image') {
+    if (message.attachments){
+        if (message.attachments[0].type == 'image') {
          if (survey_result.mood == null) {
             survey_result.mood = message.attachments[0].payload.url
             question004Preference(bot, message)
         } else {
             var attachment = {
-                'type': 'image',
-                'payload': {
-                    'url': 'https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xta1/t39.1997-6/p100x100/10173498_272702312904034_659736090_n.png'
+                    'type': 'image',
+                    'payload': {
+                        'url': 'https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xta1/t39.1997-6/p100x100/10173498_272702312904034_659736090_n.png'
+                    }
+
                 }
-
+                bot.reply(message, { 
+                    attachment: attachment,
+                });
             }
-            bot.reply(message, { 
-                attachment: attachment,
-            });
         }
-    } else {
-
-    }
+    } 
 });
 
 /// GET USER INFO !!!
