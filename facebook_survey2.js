@@ -96,6 +96,7 @@ controller.on('facebook_postback', function(bot, message) {
     var answered_true_msg = `You've already answered that question.`
     if (message.payload == 'yes(start)' || message.payload == 'Re-do survey') {
         bot.reply(message, `Excellent! Lets get started.`);
+        deleteEntry(bot, message);
         startSurvey(bot, message);
         // (message.payload == 'I love it' || message.payload == 'I hate it' || message.payload == 'Guilty pleasure')
     } else if (message.payload.substring(0,11) == 'question001'){
@@ -148,10 +149,16 @@ deleteEntry = function(bot, message) {
     var previous_entry = _.findWhere(results, {
         id: message.user
     });
-    var results_without_previous_entry = results.filter(function(value) {
-        return (value !== previous_entry);
-    });
-    results = results_without_previous_entry
+
+    if (previous_entry !== undefined) {
+        var results_without_previous_entry = results.filter(function(value) {
+            return (value !== previous_entry);
+        });
+        results = results_without_previous_entry
+    } else {
+        console.log(`ERROR DELETING!!!`)
+    }
+    
 }
     // Save/Delete/View Results
 viewResults = function(bot, message) {
