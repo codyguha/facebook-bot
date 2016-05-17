@@ -188,7 +188,7 @@ question001Relationship = function(bot, message) {
             'template_type': 'generic',
             'elements': [{
                 'title': 'I love it',
-                'subtitle': 'Swipe for more answers',
+                'subtitle': 'Swipe right for more answers',
                 'buttons': [{
                     'type': 'postback',
                     'title': 'Choose',
@@ -196,7 +196,6 @@ question001Relationship = function(bot, message) {
                 }]
             }, {
                 'title': `It's a guilty pleasure`,
-                'subtitle': 'Swipe for more answers',
                 'buttons': [{
                     'type': 'postback',
                     'title': 'Choose',
@@ -204,7 +203,6 @@ question001Relationship = function(bot, message) {
                 }]
             }, {
                 'title': 'Not really my thing',
-                'subtitle': 'Swipe for more answers',
                 'buttons': [{
                     'type': 'postback',
                     'title': 'Choose',
@@ -212,7 +210,7 @@ question001Relationship = function(bot, message) {
                 }]
             }, {
                 'title': `I’ll die before I eat fried chicken`,
-                'subtitle': 'Swipe for more answers',
+                'subtitle': 'Swipe left for more answers',
                 'buttons': [{
                     'type': 'postback',
                     'title': 'Choose',
