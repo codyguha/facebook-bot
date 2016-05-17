@@ -32,7 +32,7 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
 
 controller.on('message_received', function(bot, message) {
     console.log(message)
-}
+});
 
 /// GET USER INFO !!!
 getProfile = function(id, cb) {
