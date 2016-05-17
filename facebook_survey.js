@@ -68,7 +68,8 @@ controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
 // POSTBACK HANLDER
 controller.on('facebook_postback', function(bot, message) {
     console.log(survey_result, results)
-    if (message.payload == 'yes(start)') {
+    var answered_true_msg = answered_true_msg
+    if (message.payload == 'yes(start)' || message.payload == 'Re-do survey') {
         bot.reply(message, `Excellent! Lets get started.`);
         survey_result = {}
         survey_result.id = message.user
@@ -85,7 +86,7 @@ controller.on('facebook_postback', function(bot, message) {
                 survey_result.relationship = message.payload
                 askDetail(bot, message)
             } else {
-                bot.reply(message, `You've already answered that question.`);     
+                bot.reply(message, answered_true_msg);     
             }
         
     } else if (message.payload == 'I make it myself' || message.payload == 'KFC is my go to' || message.payload == 'Any way is good' || message.payload == 'Fried food is gross' || message.payload == `I don't eat animals` || message.payload == `It's a secret` || message.payload == `reward` ||message.payload == `cures hangover`) {
@@ -94,7 +95,7 @@ controller.on('facebook_postback', function(bot, message) {
                 survey_result.detail = message.payload
                 askMood(bot, message)
             } else {
-                bot.reply(message, `You've already answered that question.`);     
+                bot.reply(message, answered_true_msg);     
             }
         
     } else if (message.payload == '(•‿•)' || message.payload == '(•︵•)' || message.payload == '(•_•)') {
@@ -103,7 +104,7 @@ controller.on('facebook_postback', function(bot, message) {
                 survey_result.mood = message.payload
                 askPreference(bot, message)
             } else {
-                bot.reply(message, `You've already answered that question.`);     
+                bot.reply(message, answered_true_msg);     
             }
         
     } else if (message.payload == 'Chicken Parmesan' || message.payload == 'Double Down' || message.payload == 'Fried Drumsticks' || message.payload == 'Chicken Nuggets' || message.payload == 'Veggies') {
@@ -112,7 +113,7 @@ controller.on('facebook_postback', function(bot, message) {
                 survey_result.preference = message.payload
                 askHungry(bot, message)
             } else {
-                bot.reply(message, `You've already answered that question.`);     
+                bot.reply(message, answered_true_msg);     
             }
 
     } else if (message.payload == 'yes' || message.payload == 'no' ) {
@@ -121,44 +122,34 @@ controller.on('facebook_postback', function(bot, message) {
                 survey_result.hungry = message.payload
                 endSurvey(bot, message)
             } else if (survey_result == {}){
-            bot.reply(message, `You've already answered that question.`); 
+            bot.reply(message, answered_true_msg); 
             }
     } else if (message.payload == 'no(survey)') {
         sayThanks(bot, message)
     } else if (message.payload == 'View results') {
         saveResults(bot, message)
         viewResults(bot, message)
-    } else if (message.payload == 'Re-do survey') {
-        bot.reply(message, `Excellent! Lets get started.`);
-        deleteEntry(bot, message)
-        survey_result = {}
-        survey_result.id = message.user
-        getProfile(message.user, function(err, profile) {
-            
-            survey_result.user = `${profile.first_name} ${profile.last_name}`
-            survey_result.gender = `${profile.gender}`
-            survey_result.locale = `${profile.locale}`
-            survey_result.timezone = `${profile.timezone}`
-
-        });
-        askRelationship(bot, message)
     } else if (message.payload == `I'm done`) {
         saveResults(bot, message)
         sayThanks(bot, message)
     }
 });
-// check for user
+
 deleteEntry = function(bot, message){
-    var found_result = _.findWhere(results, {id: message.user});
-    var result = results.filter(function (value) {return (value !== found_result);});
-    results = result
+    var previous_entry = _.findWhere(results, {id: message.user});
+    var results_without_previous_entry = results.filter(function (value) {return (value !== previous_entry);});
+    results = results_without_previous_entry
 }
-// View Results
+// Save/Delete/View Results
 viewResults = function(bot, message) {
     var found_result = _.findWhere(results, {id: message.user});
     var text = JSON.stringify(found_result)
     bot.reply(message, `${text}`);
 }
+saveAnswer = function(answer) {
+
+}
+
 // QUESTIONS
 askSurvey = function(bot, message) {
     var attachment = {
