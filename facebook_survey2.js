@@ -32,8 +32,8 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
 
 controller.on('message_received', function(bot, message) {
     console.log(message.attachments[0].type)
-    if (message.attachments.type === 'image') {
-        console.log(message.attachments.payload.url)
+    if (message.attachments[0].type == 'image') {
+        console.log(message.attachments[0].payload.url)
     }
 });
 
