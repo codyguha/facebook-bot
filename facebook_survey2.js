@@ -76,8 +76,8 @@ controller.on('facebook_postback', function(bot, message) {
         startSurvey(bot, message);
         // (message.payload == 'I love it' || message.payload == 'I hate it' || message.payload == 'Guilty pleasure')
     } else if (message.payload.substring(0,11) == 'question001'){
-        if (survey_result.message.relationship == null) {
-            survey_result.message.relationship = message.payload.substring(12)
+        if (survey_result.relationship == null) {
+            survey_result.relationship = message.payload.substring(12)
             question002Detail(bot, message)
         } else {
             bot.reply(message, answered_true_msg);
