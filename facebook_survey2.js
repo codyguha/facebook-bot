@@ -31,7 +31,6 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
 });
 
 controller.on('message_received', function(bot, message) {
-    console.log(message.attachments[0].payload)
     if (message.attachments){
         if (message.attachments[0].type == 'image') {
             if (survey_result.mood == null) {
