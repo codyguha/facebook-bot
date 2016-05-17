@@ -265,11 +265,13 @@ question002Detail = function(bot, message) {
             }
         };
 
-        bot.reply(message, {
-            attachment: attachment,
-        });
-        
-        bot.reply(message, `What is your favourite way to eat fried chicken?`);
+            bot.reply(message, {
+                attachment: attachment,
+            });
+            
+            bot.reply(message, `What is your favourite way to eat fried chicken?`);
+
+        }
     
     } else if (message.payload.substring(12) == `It's a guilty pleasure`) {
         question002b = function(bot, message){
@@ -304,11 +306,12 @@ question002Detail = function(bot, message) {
             }
         };
 
-        bot.reply(message, {
-            attachment: attachment,
-        });
-        
-        bot.reply(message, `Guilty pleasure you say, tell me more.`);
+            bot.reply(message, {
+                attachment: attachment,
+            });
+            
+            bot.reply(message, `Guilty pleasure you say, tell me more.`);
+        }
     
     } else {
         question002c = function(bot, message){
@@ -343,12 +346,12 @@ question002Detail = function(bot, message) {
             }
         };
 
-        bot.reply(message, {
-            attachment: attachment,
-        });
+            bot.reply(message, {
+                attachment: attachment,
+            });
         
-        bot.reply(message, `So your not a fan eh? Tell me more.`);
-    
+            bot.reply(message, `So your not a fan eh? Tell me more.`);
+        }
     }
 }
 
