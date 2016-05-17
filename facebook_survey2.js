@@ -79,6 +79,7 @@ controller.hears(['hi', 'Hi'], 'message_received', function(bot, message) {
         id: message.user
     });
     console.log(message)
+    bot.reply(message, `Hello`);
     // getProfile(message.user, function(err, profile) {
     //     if (found_result == undefined) {
     //         bot.reply(message, `Hello ${profile.first_name}`);
