@@ -53,22 +53,16 @@ getProfile = function (id, cb) {
 }
 
 controller.hears(['hi','Hi'], 'message_received', function(bot, message) {
-    console.log(message.user)
-    console.log(message)
-    bot.reply(message, `Hello`);
-    askSurvey(bot, message);
-    // var found_result = _.findWhere(results, {id: message.user});
-    // if (found_result == undefined){
-            
-    //         
-    // } else {
-    //     bot.reply(message, `Hello, you have already done the survey`);
-    //     redoSurvey(bot, message)
-    // }
-    // getProfile(message.user, function(err, profile) {
-    //     console.log(message.user)
-    // });
-    
+    var found_result = _.findWhere(results, {id: message.user});
+    getProfile(message.user, function(err, profile) {
+        if (found_result == undefined){
+            bot.reply(message, `Hello ${profile.first_name}`);
+            askSurvey(bot, message);   
+        } else {
+            bot.reply(message, `Hello ${profile.first_name}, you have already done the survey`);
+            redoSurvey(bot, message)
+        }
+    });
 });
 
 // POSTBACK HANLDER
@@ -77,12 +71,12 @@ controller.on('facebook_postback', function(bot, message) {
         bot.reply(message, `Excellent! Lets get started.`);
         survey_result = {}
         survey_result.id = message.user
-        // getProfile(message.user, function(err, profile) {
-        //     survey_result.user = `${profile.first_name} ${profile.last_name}`
-        //     survey_result.gender = `${profile.gender}`
-        //     survey_result.locale = `${profile.locale}`
-        //     survey_result.timezone = `${profile.timezone}`
-        // });
+        getProfile(message.user, function(err, profile) {
+            survey_result.user = `${profile.first_name} ${profile.last_name}`
+            survey_result.gender = `${profile.gender}`
+            survey_result.locale = `${profile.locale}`
+            survey_result.timezone = `${profile.timezone}`
+        });
         askRelationship(bot, message)
     } else if (message.payload == 'I love it' || message.payload == 'I hate it' || message.payload == 'Guilty pleasure') {
         
@@ -138,14 +132,14 @@ controller.on('facebook_postback', function(bot, message) {
         deleteEntry(bot, message)
         survey_result = {}
         survey_result.id = message.user
-        // getProfile(message.user, function(err, profile) {
+        getProfile(message.user, function(err, profile) {
             
-        //     survey_result.user = `${profile.first_name} ${profile.last_name}`
-        //     survey_result.gender = `${profile.gender}`
-        //     survey_result.locale = `${profile.locale}`
-        //     survey_result.timezone = `${profile.timezone}`
+            survey_result.user = `${profile.first_name} ${profile.last_name}`
+            survey_result.gender = `${profile.gender}`
+            survey_result.locale = `${profile.locale}`
+            survey_result.timezone = `${profile.timezone}`
 
-        // });
+        });
         askRelationship(bot, message)
     } else if (message.payload == `I'm done`) {
         saveResults(bot, message)
