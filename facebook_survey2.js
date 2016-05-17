@@ -30,60 +30,6 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
     });
 });
 
-var SURVEY = {
-        title: Chicken Survey,
-        questions: { 
-            ask: `What would you say your relationship is with fired chicken?`
-            responses: {
-                'I love it', 
-                `It's a guilty pleasure`,
-                `Not really my thing`,
-                `I’ll die before I eat fried chicken`
-            }
-        },{ 
-            ask: `What is your favourite way to eat fried chicken?`
-            responses: {
-                'I make it myself', 
-                `KFC is my go to`,
-                `Any fried chicken is good chicken`,
-                `It's a secret and I’m not telling you`
-            }
-        },{ 
-            ask: `Guilty pleasure you say, tell me more.`
-            responses: {
-                'After a night of hard partying', 
-                `A treat if I’ve been eating good for while`,
-                `It's a personal matter`,
-            }
-        },{ 
-            ask: `So your not a fan eh? Tell me more.`
-            responses: {
-                'Chicken is God’s creature and shouldn’t be eaten', 
-                `Fried food is gross`,
-                `I’m not going to get into it.`,
-            }
-        },
-
-
-
-
-
-
-
-Not my thing and I’ll die questions. So your not a fan eh? Tell us more.
-Chicken is God’s creature and shouldn’t be eaten
-Fried food is gross 
-I’m not going to get into it.
-What is your current mood?
-Show 4 different emojis
-Which of these meals your you like to be eating right now?
-Show 4 food pics
-Have we made you hungry answering these questions?
-Yes/no
-Thanks for your time. Funny animated High five meme!}
-
-
-
 /// GET USER INFO !!!
 getProfile = function(id, cb) {
 
