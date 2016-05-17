@@ -226,7 +226,6 @@ question001Relationship = function(bot, message) {
 
 question002Detail = function(bot, message) {
     if (message.payload.substring(12) == 'I love it') {
-        question002a = function(bot, message){
             var attachment = {
             'type': 'template',
             'payload': {
@@ -271,10 +270,8 @@ question002Detail = function(bot, message) {
             
             bot.reply(message, `What is your favourite way to eat fried chicken?`);
 
-        }
     
     } else if (message.payload.substring(12) == `It's a guilty pleasure`) {
-        question002b = function(bot, message){
             var attachment = {
             'type': 'template',
             'payload': {
@@ -311,10 +308,8 @@ question002Detail = function(bot, message) {
             });
             
             bot.reply(message, `Guilty pleasure you say, tell me more.`);
-        }
     
     } else {
-        question002c = function(bot, message){
             var attachment = {
             'type': 'template',
             'payload': {
@@ -351,7 +346,6 @@ question002Detail = function(bot, message) {
             });
         
             bot.reply(message, `So your not a fan eh? Tell me more.`);
-        }
     }
 }
 
