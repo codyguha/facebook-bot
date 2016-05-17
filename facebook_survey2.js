@@ -51,57 +51,6 @@ getProfile = function(id, cb) {
     })
 }
 
-sayHi = function(id, cb) {
-
-    if (!cb) cb = Function.prototype
-
-    request({
-        method: 'POST',
-        uri: `"https://graph.facebook.com/v2.6/988082541288774/thread_settings`,
-        qs: {
-          "setting_type":"call_to_actions",
-          "thread_state":"new_thread",
-          "call_to_actions":[
-            {
-              "message":{
-                "attachment":{
-                  "type":"template",
-                  "payload":{
-                    "template_type":"generic",
-                    "elements":[
-                      {
-                        "title":"Welcome to My Company!",
-                        "item_url":"https://www.petersbowlerhats.com",
-                        "image_url":"https://www.petersbowlerhats.com/img/hat.jpeg",
-                        "subtitle":"We have the right hat for everyone.",
-                        "buttons":[
-                          {
-                            "type":"web_url",
-                            "title":"View Website",
-                            "url":"https://www.petersbowlerhats.com"
-                          },
-                          {
-                            "type":"postback",
-                            "title":"Start Chatting",
-                            "payload":"DEVELOPER_DEFINED_PAYLOAD"
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          ]
-        },
-        json: true
-    }, function(err, res, body) {
-        if (err) return cb(err)
-        if (body.error) return cb(body.error)
-
-        cb(null, body)
-    })
-}
 
 controller.hears(['hi', 'Hi'], 'message_received', function(bot, message) {
     var found_result = _.findWhere(results, {
@@ -110,7 +59,7 @@ controller.hears(['hi', 'Hi'], 'message_received', function(bot, message) {
     getProfile(message.user, function(err, profile) {
         if (found_result == undefined) {
             bot.reply(message, `Hello ${profile.first_name}`);
-            askSurvey(bot, message);
+            doSurvey(bot, message);
         } else {
             bot.reply(message, `Hello ${profile.first_name}, you have already done the survey`);
             redoSurvey(bot, message)
@@ -124,15 +73,7 @@ controller.on('facebook_postback', function(bot, message) {
     var answered_true_msg = answered_true_msg
     if (message.payload == 'yes(start)' || message.payload == 'Re-do survey') {
         bot.reply(message, `Excellent! Lets get started.`);
-        survey_result = {}
-        survey_result.id = message.user
-        getProfile(message.user, function(err, profile) {
-            survey_result.user = `${profile.first_name} ${profile.last_name}`
-            survey_result.gender = `${profile.gender}`
-            survey_result.locale = `${profile.locale}`
-            survey_result.timezone = `${profile.timezone}`
-        });
-        question001Relationship(bot, message)
+        startSurvey(bot, message);
     } else if (message.payload == 'I love it' || message.payload == 'I hate it' || message.payload == 'Guilty pleasure') {
         if (survey_result.relationship == null) {
             survey_result.relationship = message.payload
@@ -172,7 +113,7 @@ controller.on('facebook_postback', function(bot, message) {
         } else if (survey_result == {}) {
             bot.reply(message, answered_true_msg);
         }
-    } else if (message.payload == 'no(survey)') {
+    } else if (message.payload == 'no(end)') {
         sayThanks(bot, message)
     } else if (message.payload == 'View results') {
         saveResults(bot, message)
@@ -205,7 +146,7 @@ saveAnswer = function(answer) {
 }
 
 // QUESTIONS
-askSurvey = function(bot, message) {
+doSurvey = function(bot, message) {
     var attachment = {
         'type': 'template',
         'payload': {
@@ -218,7 +159,7 @@ askSurvey = function(bot, message) {
             }, {
                 'type': 'postback',
                 'title': `No`,
-                'payload': `no(survey)`
+                'payload': `no(end)`
             }]
         }
     };
@@ -228,24 +169,55 @@ askSurvey = function(bot, message) {
     });
 }
 
+startSurvey = function(bot, message) {
+    survey_result = {}
+    survey_result.id = message.user
+    getProfile(message.user, function(err, profile) {
+        survey_result.user = `${profile.first_name} ${profile.last_name}`
+        survey_result.gender = `${profile.gender}`
+        survey_result.locale = `${profile.locale}`
+        survey_result.timezone = `${profile.timezone}`
+    });
+    question001Relationship(bot, message)
+}
+
 question001Relationship = function(bot, message) {
     var attachment = {
         'type': 'template',
         'payload': {
-            'template_type': 'button',
-            'text': 'What would you say your relationship is with fried chicken ?',
-            'buttons': [{
-                'type': 'postback',
+            'template_type': 'generic',
+            'elements': [{
                 'title': 'I love it',
-                'payload': 'I love it'
+                'subtitle': 'Swipe for more answers',
+                'buttons': [{
+                    'type': 'postback',
+                    'title': 'Choose',
+                    'payload': 'question001 I love it'
+                }]
             }, {
-                'type': 'postback',
-                'title': 'I hate it',
-                'payload': 'I hate it'
+                'title': `It's a guilty pleasure`,
+                'subtitle': 'Swipe for more answers',
+                'buttons': [{
+                    'type': 'postback',
+                    'title': 'Choose',
+                    'payload': `question001 It's a guilty pleasure`
+                }]
             }, {
-                'type': 'postback',
-                'title': 'Guilty pleasure',
-                'payload': 'Guilty pleasure'
+                'title': 'Not really my thing',
+                'subtitle': 'Swipe for more answers',
+                'buttons': [{
+                    'type': 'postback',
+                    'title': 'Choose',
+                    'payload': 'question001 Not really my thing'
+                }]
+            }, {
+                'title': `I’ll die before I eat fried chicken`,
+                'subtitle': 'Swipe for more answers',
+                'buttons': [{
+                    'type': 'postback',
+                    'title': 'Choose',
+                    'payload': `question001 I’ll die before I eat fried chicken`
+                }]
             }]
         }
     };
@@ -253,6 +225,7 @@ question001Relationship = function(bot, message) {
     bot.reply(message, {
         attachment: attachment,
     });
+    bot.reply(message, 'What would you say your relationship is with fried chicken ?');
 }
 
 askPreference = function(bot, message) {
