@@ -69,7 +69,7 @@ controller.hears(['hi', 'Hi'], 'message_received', function(bot, message) {
 
 // POSTBACK HANLDER
 controller.on('facebook_postback', function(bot, message) {
-    console.log(survey_result, results)
+    console.log(survey_result, results, message.payload.substring(12))
     var answered_true_msg = `You've already answered that question.`
     if (message.payload == 'yes(start)' || message.payload == 'Re-do survey') {
         bot.reply(message, `Excellent! Lets get started.`);
