@@ -440,7 +440,7 @@ question004Preference = function(bot, message) {
         attachment: attachment,
     });
 
-    bot.reply(message, 'Which of these meals your you like to be eating right now ?');
+    bot.reply(message, 'Which of these meals would you like to be eating right now ?');
 }
 
 question005Hungry = function(bot, message) {
