@@ -165,7 +165,7 @@ viewResults = function(bot, message) {
     var found_result = _.findWhere(results, {
         id: message.user
     });
-    var text = JSON.stringify(found_result)
+    var text = found_result
     bot.reply(message, `NAME: ${text.user}, RELATIONSHIP: ${text.relationship}, DETAIL: ${text.detail}, PREFERENCE: ${text.preference}`);
     bot.reply(message, `hungry ? ${text.hungry}`);
     bot.reply(message, `mood: ${text.mood}`);
