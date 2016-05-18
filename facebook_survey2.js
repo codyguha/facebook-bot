@@ -61,13 +61,12 @@ getProfile = function(id, cb) {
         method: 'GET',
         uri: `https://graph.facebook.com/v2.6/${id}`,
         qs: {
-            fields: 'first_name,last_name,gender,locale,timezone',
-            access_token: 'EAAMRuoZC3R9UBAEOeWfG62t7WBByJ44alZBjEu39x85d4PvQmkSUZBFvHjgZCfV6qtRioumMp9scHsmNzjB3sS13l0mnvnQW9OmJSQayyWydOXUquYQy62jFVpJG8WHQZATtgLMHSLBUmM7Yd8gEsqUTKBcZBxvAgpnHEId2N2Ff3nGqTu95XH'
+            fields: 'first_name,last_name,profile_pic,gender,locale,timezone',
+            access_token: process.env.page_token
         },
         json: true
     }, function(err, res, body) {
         if (err) return cb(err)
-
         if (body.error) return cb(body.error)
 
         cb(null, body)
