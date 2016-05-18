@@ -59,10 +59,10 @@ getProfile = function(id, cb) {
 
     request({
         method: 'GET',
-        uri: `https://graph.facebook.com/v2.6/129946494085866`,
+        uri: `https://graph.facebook.com/v2.6/${id}`,
         qs: {
             fields: 'first_name,last_name,gender,locale,timezone',
-            access_token: 'EAAMRuoZC3R9UBANiEcTToJlOR3lZAZADGkJ9VDmjDcSuYlcSNcSgARcRZAKDQRSXLkIYqKb59dla5Ty3lAUM4BpwiWFz1mxE1VCO5ROcK1OHo3htaxo0mC8hLD2IR69tnfslHrhPQz2R8ZCMmoaZAfZCSzSG9i2BHN5hgZATj3Bmv3X1KblUrmxd'
+            access_token: 'EAAMRuoZC3R9UBAEOeWfG62t7WBByJ44alZBjEu39x85d4PvQmkSUZBFvHjgZCfV6qtRioumMp9scHsmNzjB3sS13l0mnvnQW9OmJSQayyWydOXUquYQy62jFVpJG8WHQZATtgLMHSLBUmM7Yd8gEsqUTKBcZBxvAgpnHEId2N2Ff3nGqTu95XH'
         },
         json: true
     }, function(err, res, body) {
