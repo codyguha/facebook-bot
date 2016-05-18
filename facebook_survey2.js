@@ -62,20 +62,12 @@ getProfile = function(id, cb) {
         uri: `https://graph.facebook.com/v2.6/${id}`,
         qs: {
             fields: 'first_name,last_name,gender,locale,timezone',
-            access_token: process.env.page_token
+            access_token: 'EAAMRuoZC3R9UBANiEcTToJlOR3lZAZADGkJ9VDmjDcSuYlcSNcSgARcRZAKDQRSXLkIYqKb59dla5Ty3lAUM4BpwiWFz1mxE1VCO5ROcK1OHo3htaxo0mC8hLD2IR69tnfslHrhPQz2R8ZCMmoaZAfZCSzSG9i2BHN5hgZATj3Bmv3X1KblUrmxd'
         },
         json: true
     }, function(err, res, body) {
-        if (err) 
-            return cb(err)
-            request({
-                method: 'GET',
-                uri: `https://graph.facebook.com/v2.6/${id}`,
-                qs: {
-                    fields: 'first_name,last_name,gender,locale,timezone',
-                    access_token: 'EAAMRuoZC3R9UBAJ6J5Q7DRGtdXlJ127BbrqyBhV0KdeYYHyMi9taytHUMQ0HacfRF19T66gSl1TV6pXzVXObqfzAkPcpfmF1sXrYnfZCy84AuW4YYAFRnFTUQzVODrwh6vgMlSsee2VeGPgWbIhQPeGgZAGZBeF4R2YSkJnKR3ONNL2WzUaw'
-                },
-                json: true
+        if (err) return cb(err)
+
         if (body.error) return cb(body.error)
 
         cb(null, body)
