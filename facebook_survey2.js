@@ -172,9 +172,6 @@ viewResults = function(bot, message) {
     bot.reply(message, `hungry ? ${text.hungry}`);
     bot.reply(message, `mood: ${text.mood}`);
 }
-saveAnswer = function(answer) {
-
-}
 
 // QUESTIONS
 doSurvey = function(bot, message) {
