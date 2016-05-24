@@ -80,15 +80,16 @@ controller.hears(['hi', 'Hi'], 'message_received', function(bot, message) {
     });
     console.log(message)
     bot.reply(message, `Hello`);
-    getProfile(message.user, function(err, profile) {
-        if (found_result == undefined) {
-            bot.reply(message, `Hello ${profile.first_name}`);
-            doSurvey(bot, message);
-        } else {
-            bot.reply(message, `Hello ${profile.first_name}, you have already done the survey`);
-            redoSurvey(bot, message)
-        }
-    });
+    doSurvey(bot, message);
+    // getProfile(message.user, function(err, profile) {
+    //     if (found_result == undefined) {
+    //         bot.reply(message, `Hello ${profile.first_name}`);
+    //         doSurvey(bot, message);
+    //     } else {
+    //         bot.reply(message, `Hello ${profile.first_name}, you have already done the survey`);
+    //         redoSurvey(bot, message)
+    //     }
+    // });
 });
 
 // POSTBACK HANLDER
@@ -202,12 +203,12 @@ doSurvey = function(bot, message) {
 startSurvey = function(bot, message) {
     survey_result = {}
     survey_result.id = message.user
-    getProfile(message.user, function(err, profile) {
-        survey_result.user = `${profile.first_name} ${profile.last_name}`
-        survey_result.gender = `${profile.gender}`
-        survey_result.locale = `${profile.locale}`
-        survey_result.timezone = `${profile.timezone}`
-    });
+    // getProfile(message.user, function(err, profile) {
+    //     survey_result.user = `${profile.first_name} ${profile.last_name}`
+    //     survey_result.gender = `${profile.gender}`
+    //     survey_result.locale = `${profile.locale}`
+    //     survey_result.timezone = `${profile.timezone}`
+    // });
     question001Relationship(bot, message)
 }
 
