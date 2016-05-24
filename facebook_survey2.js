@@ -80,15 +80,15 @@ controller.hears(['hi', 'Hi'], 'message_received', function(bot, message) {
     });
     console.log(message, bot)
     bot.reply(message, `Hello`);
-    getProfile(message.user, function(err, profile) {
-        if (found_result == undefined) {
-            bot.reply(message, `Hello ${profile.first_name}`);
-            doSurvey(bot, message);
-        } else {
-            bot.reply(message, `Hello ${profile.first_name}, you have already done the survey`);
-            redoSurvey(bot, message)
-        }
-    });
+    // getProfile(message.user, function(err, profile) {
+    //     if (found_result == undefined) {
+    //         bot.reply(message, `Hello ${profile.first_name}`);
+    //         doSurvey(bot, message);
+    //     } else {
+    //         bot.reply(message, `Hello ${profile.first_name}, you have already done the survey`);
+    //         redoSurvey(bot, message)
+    //     }
+    // });
 });
 
 // POSTBACK HANLDER
