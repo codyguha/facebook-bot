@@ -78,7 +78,7 @@ controller.hears(['hi', 'Hi'], 'message_received', function(bot, message) {
     var found_result = _.findWhere(results, {
         id: message.user
     });
-    console.log(message, bot)
+    console.log(message)
     bot.reply(message, `Hello`);
     // getProfile(message.user, function(err, profile) {
     //     if (found_result == undefined) {
